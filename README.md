@@ -1,4 +1,4 @@
-API para prover os dados do registroCOVID
+API para prover e criar dados do Gerenciar de Postagens
 
 ## Tecnologias
 
