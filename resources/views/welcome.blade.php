@@ -81,10 +81,9 @@
             @endauth
         </div>
         @endif
-        <h1>OIi</h1>
         <div class="content">
             <div class="title m-b-md">
-                Laravelaaa
+                Laravel
             </div>
 
             <div class="links">
