@@ -30,15 +30,6 @@ jobs:
       - name: Check PHP CS
         run: composer run php-cs:check
 
-      - name: Migrate
-        run: php artisan migrate:fresh --database=pgsql_test
-        env:
-          DB_HOST_TEST: db
-          DB_PORT_TEST: 5432
-          DB_DATABASE_TEST: gereciamento_postagens_test
-          DB_USERNAME_TEST: postgres
-          DB_PASSWORD_TEST: postgres
-
       - name: Run tests
         run: composer test
         env:
