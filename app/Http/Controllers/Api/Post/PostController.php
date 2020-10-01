@@ -3,25 +3,26 @@
 namespace App\Http\Controllers\Api\Post;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
-use App\Http\Resources\Post as PostResource;
+use App\Repositories\Contracts\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
+    private $postModel;
+
+    public function __construct(PostRepositoryInterface $postRepository)
+    {
+        $this->postModel = $postRepository;
+    }
+
     public function index(Request $request)
     {
-        $postQuery = Post::query();
-
-        if (!empty($request->get('tag'))) {
-            $postQuery = $postQuery->WhereJsonContains('tags', $request->get('tag'));
-        }
-
-        return PostResource::collection(
-            $postQuery->where(['autor_id' => auth()->user()->id])->get()
-        )->collection;
+        return response()->json(
+            $this->postModel->allUserPost($request->query('tag')),
+            Response::HTTP_OK
+        );
     }
 
     public function store(Request $request)
@@ -37,15 +38,9 @@ class PostController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
-        $postCreate = new Post();
-        $postCreate->title = $request->title;
-        $postCreate->content = $request->content;
-        $postCreate->tags = json_encode($request->tags);
-        $postCreate->autor_id = auth()->user()->id;
-        $postCreate->save();
+        $postCreated = $this->postModel->createNewPost($request->post());
 
-
-        return response()->json([$postCreate], Response::HTTP_CREATED);
+        return response()->json($postCreated, Response::HTTP_CREATED);
     }
 
     public function update(Request $request, int $postId)
@@ -60,17 +55,14 @@ class PostController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         }
 
-        $post = Post::find($postId);
+        $post = $this->postModel->updatePostById($request->post(), $postId);
 
-        $post->update($request->post());
-
-        return $post->getChanges($request->post());
+        return response()->json($post->getChanges(), Response::HTTP_OK);
     }
 
     public function delete(int $postId)
     {
-        $post = Post::find($postId);
-        $post->delete();
+        $this->postModel->deletePostById($postId);
 
         return response([], Response::HTTP_NO_CONTENT);
     }
