@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 
 class JWTAuthController extends Controller
 {
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PostController extends Controller
 {
-
     public function index(Request $request)
     {
         $postQuery = Post::query();
