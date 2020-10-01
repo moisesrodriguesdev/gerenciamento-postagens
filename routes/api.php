@@ -13,3 +13,24 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::namespace('Api')->group(function () {
+    Route::namespace('JWTAuth')->group(function () {
+        Route::group(['prefix' => 'auth'], function () {
+            Route::post('register', 'JWTAuthController@register');
+            Route::post('login', 'JWTAuthController@login');
+        });
+    });
+
+    Route::namespace('Post')->group(function () {
+        Route::middleware('api.jwt')->group(function () {
+            Route::get('post', 'PostController@index');
+            Route::post('post', 'PostController@store');
+
+            Route::middleware('post')->group(function () {
+                Route::put('post/{postId}', 'PostController@update');
+                Route::delete('post/{postId}', 'PostController@delete');
+            });
+        });
+    });
+});
