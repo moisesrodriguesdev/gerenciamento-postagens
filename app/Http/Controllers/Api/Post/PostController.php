@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PostStoreRequest;
+use App\Http\Requests\PostUpdateRequest;
 use App\Repositories\Contracts\PostRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -131,37 +133,28 @@ class PostController extends Controller
      *          }
      *      ),
      *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request",
+     *          response=422,
+     *          description="Unprocessable Entity",
      *          content={
      *              @OA\MediaType(
      *                  mediaType="application/json",
      *                  @OA\Schema(
      *                      example={
-     *                          "title": {
-     *                              "The title has already been taken."
+     *                          "message": "The given data was invalid.",
+     *                          "errors": {
+     *                              "title": {
+     *                                  "The title has already been taken."
+     *                              }
      *                          }
      *                      }
      *                  )
      *              )
      *          }
      *      ),
-     *      @OA\Response(response=401, description="Unauthorized"),
      * )
      */
-    public function store(Request $request)
+    public function store(PostStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'required|unique:posts',
-            'content' => 'required',
-            'tags' => 'required|array',
-            'tags.*' => 'string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
-        }
-
         $postCreated = $this->postModel->createNewPost($request->post());
 
         return response()->json($postCreated, Response::HTTP_CREATED);
@@ -194,7 +187,7 @@ class PostController extends Controller
      *          )
      *      ),
      *      @OA\Response(
-     *          response=201,
+     *          response=200,
      *          description="Executado com sucesso",
      *          content={
      *              @OA\MediaType(
@@ -225,15 +218,18 @@ class PostController extends Controller
      *          }
      *      ),
      *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request",
+     *          response=422,
+     *          description="Unprocessable Entity",
      *          content={
      *              @OA\MediaType(
      *                  mediaType="application/json",
      *                  @OA\Schema(
      *                      example={
-     *                          "title": {
-     *                              "The title has already been taken."
+     *                          "message": "The given data was invalid.",
+     *                          "errors": {
+     *                              "title": {
+     *                                  "The title has already been taken."
+     *                              }
      *                          }
      *                      }
      *                  )
@@ -242,18 +238,8 @@ class PostController extends Controller
      *      ),
      * )
      */
-    public function update(Request $request, int $postId)
+    public function update(PostUpdateRequest $request, int $postId)
     {
-        $validator = Validator::make($request->all(), [
-            'title' => 'unique:posts',
-            'tags' => 'array',
-            'tags.*' => 'string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
-        }
-
         $post = $this->postModel->updatePostById($request->post(), $postId);
 
         return response()->json($post->getChanges(), Response::HTTP_OK);

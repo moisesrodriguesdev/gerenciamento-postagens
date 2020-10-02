@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\JWTAuth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -11,18 +13,8 @@ use Illuminate\Support\Facades\Hash;
 
 class JWTAuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|between:2,100',
-            'email' => 'required|email|unique:users|max:50',
-            'password' => 'required|string|min:6',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors());
-        }
-
         $userCreate = new User();
         $userCreate->name = $request->name;
         $userCreate->email = $request->email;
@@ -40,20 +32,9 @@ class JWTAuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required|string|min:6'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
-
-        $data = $validator->validated();
-
-        return $this->authenticate($data);
+        return $this->authenticate($request->post());
     }
 
     private function authenticate($data)
