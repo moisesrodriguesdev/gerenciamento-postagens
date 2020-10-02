@@ -80,4 +80,31 @@ class JWTAuthController extends Controller
             'expires_in' => auth('api')->factory()->getTTL() * 60 * 4
         ]);
     }
+
+    /**
+     * Auth for the Swagger
+     *
+     * @return JsonResponse
+     */
+    public function auth(Request $request)
+    {
+        $rawHeader = explode(' ', $request->header('Authorization'));
+
+        if (count($rawHeader) !== 2) {
+            return response()->json([
+                'errors' => [
+                    'authorization' => ['Invalid authorization header.']
+                ]
+            ], 422);
+        }
+
+        $authData = explode(':', base64_decode($rawHeader[1]));
+
+        $data = [
+            'email' => $authData[0],
+            'password' => $authData[1]
+        ];
+
+        return $this->authenticate($data);
+    }
 }
