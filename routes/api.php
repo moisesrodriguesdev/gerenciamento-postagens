@@ -19,7 +19,7 @@ Route::namespace('Api')->group(function () {
         Route::group(['prefix' => 'auth'], function () {
             Route::post('register', 'JWTAuthController@register');
             Route::post('login', 'JWTAuthController@login');
-            Route::post('auth', 'JWTAuthController@auth');
+            Route::post('auth', 'JWTAuthController@authSwagger');
         });
     });
 

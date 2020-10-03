@@ -39,11 +39,6 @@ class Controller extends BaseController
      *         tokenUrl="/api/auth/auth",
      *         scopes={}
      *     )
-     * ),
-     *
-     * @OA\Tag(
-     *     name="Recursos",
-     *     description="API Endpoints de recursos do projeto"
      * )
      */
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;

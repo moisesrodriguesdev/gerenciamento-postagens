@@ -6,9 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PostStoreRequest;
 use App\Http\Requests\PostUpdateRequest;
 use App\Repositories\Contracts\PostRepositoryInterface;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
@@ -62,10 +61,21 @@ class PostController extends Controller
      *              )
      *          }
      *       ),
-     *      @OA\Response(response=401, description="Unauthorized"),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          content={
+     *              @OA\MediaType(
+     *                  mediaType="application/json",
+     *                  @OA\Schema(
+     *                      example={
+     *                          "status": "Authorization Token not found"
+     *                      }
+     *                  )
+     *              )
+     *          }
+     *      )
      * )
-     *
-     * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
@@ -90,6 +100,7 @@ class PostController extends Controller
      *          description="",
      *          required=true,
      *          @OA\JsonContent(
+     *              required={"title", "content", "tags"},
      *              @OA\Property(property="title", type="string", example="Titulo do post"),
      *              @OA\Property(property="content", type="string", example="Conteudo do post"),
      *              @OA\Property(
@@ -151,6 +162,20 @@ class PostController extends Controller
      *              )
      *          }
      *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *          content={
+     *              @OA\MediaType(
+     *                  mediaType="application/json",
+     *                  @OA\Schema(
+     *                      example={
+     *                          "status": "Authorization Token not found"
+     *                      }
+     *                  )
+     *              )
+     *          }
+     *      )
      * )
      */
     public function store(PostStoreRequest $request)
@@ -282,8 +307,6 @@ class PostController extends Controller
      *          }
      *      ),
      * )
-     *
-     * @return \Illuminate\Http\Response
      */
     public function delete(int $postId)
     {
