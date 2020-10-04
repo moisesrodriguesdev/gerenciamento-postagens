@@ -10,7 +10,6 @@ use App\Models\User;
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
-    use DatabaseTransactions;
 
     /**
      * @var User

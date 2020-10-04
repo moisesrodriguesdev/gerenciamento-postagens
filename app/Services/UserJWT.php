@@ -3,9 +3,14 @@
 namespace App\Services;
 
 use Symfony\Component\HttpFoundation\Response;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+
 
 class UserJWT
 {
+
     /**
      * Get the token array structure.
      *
@@ -22,8 +27,16 @@ class UserJWT
 
     public function getTokenJWT(array $data)
     {
-        if (!$token = auth('api')->attempt($data)) {
-            return false;
+        try {
+            if (!$token = auth('api')->attempt($data)) {
+                return false;
+            }
+        } catch (TokenExpiredException $e) {
+            return response()->json(['token_expired'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (TokenInvalidException $e) {
+            return response()->json(['token_invalid'], Response::HTTP_INTERNAL_SERVER_ERROR);
+        } catch (JWTException $e) {
+            return response()->json(['token_absent' => $e->getMessage()], 500);
         }
 
         return $this->createNewToken($token);
