@@ -1,1 +1,1 @@
-web: vendor/bin/heroku-php-nginx -C rewrite.conf www/
+web: vendor/bin/heroku-php-nginx -C phpdocker/nginx/nginx.conf public/
