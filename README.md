@@ -2,6 +2,11 @@ API para prover e criar dados do Gerenciar de Postagens
 
 ## Tecnologias
 
+-   Pipelines de CI com GitHub Actions
+-   PHPUnit para testes unitários
+-   Php-cs-fixer para corrigir os padrões de codificação do PHP
+-   Autenticação com JWT
+
 ### Ambiente
 
 -   Docker
@@ -34,14 +39,14 @@ docker-compose up
 
 Ao executar o comando acima, será criado 3 containers
 
--   gerenciamento-postagens-php-fpm
--   gerenciamento-postagens-mysql
--   gerenciamento-postagens-webserver
+-   gerenciamento-postagens_php-fpm_1
+-   gerenciamento-postagens_db_1
+-   gerenciamento-postagens_webserver_1
 
-Acessar o container 'gerenciamento-postagens-php-fpm'
+Acessar o container 'gerenciamento-postagens_php-fpm_1'
 
 ```
-docker exec -it gerenciamento-postagens-php-fpm bash
+docker exec -it gerenciamento-postagens_php-fpm_1 bash
 ```
 
 Dentro do container acessar o diretório o /application
