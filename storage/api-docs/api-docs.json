@@ -14,7 +14,7 @@
     },
     "servers": [
         {
-            "url": "http://gerenciamentopostapi.herokuapp.com/",
+            "url": "http://localhost:8000/",
             "description": "Gerenciamento de Postagens API"
         }
     ],
@@ -169,7 +169,7 @@
                 }
             }
         },
-        "/api/post": {
+        "/api/posts": {
             "get": {
                 "tags": [
                     "Postagem"
@@ -342,7 +342,7 @@
                 ]
             }
         },
-        "/api/post/{postId}": {
+        "/api/posts/{postId}": {
             "put": {
                 "tags": [
                     "Postagem"

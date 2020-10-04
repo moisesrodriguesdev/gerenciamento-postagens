@@ -22,7 +22,7 @@ class PostController extends Controller
      * Listar todas as postagens cadastradas pelo usuário
      *
      * @OA\Get(
-     *      path="/api/post",
+     *      path="/api/posts",
      *      operationId="getPosts",
      *      tags={"Postagem"},
      *      summary="Lista Posts",
@@ -90,7 +90,7 @@ class PostController extends Controller
      * Cadastro de postagens no sistema
      *
      * @OA\Post(
-     *      path="/api/post",
+     *      path="/api/posts",
      *      operationId="storePost",
      *      tags={"Postagem"},
      *      summary="Cadastro de postagens",
@@ -189,7 +189,7 @@ class PostController extends Controller
      * Atualiza Postagem
      *
      * @OA\Put(
-     *      path="/api/post/{postId}",
+     *      path="/api/posts/{postId}",
      *      tags={"Postagem"},
      *      summary="Atualiza Postagem",
      *      description="Atualiza post cadastrado anteriormente no sistema",
@@ -274,7 +274,7 @@ class PostController extends Controller
      * Deleta Postagem
      *
      * @OA\Delete(
-     *      path="/api/post/{postId}",
+     *      path="/api/posts/{postId}",
      *      operationId="deletePost",
      *      tags={"Postagem"},
      *      summary="Deleta Postagem",
