@@ -23,7 +23,7 @@ class GetPostTest extends TestCase
     {
         $post = factory(Post::class)->create($this->data());
 
-        $response = $this->getJson("api/post");
+        $response = $this->getJson("api/posts");
         $response->assertStatus(Response::HTTP_OK);
         $response->assertJsonFragment([
             "id" => $post->id,

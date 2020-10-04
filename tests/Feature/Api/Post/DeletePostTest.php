@@ -25,7 +25,7 @@ class DeletePostTest extends TestCase
 
         factory(Post::class)->create($form->create);
 
-        $response = $this->deleteJson("api/post/{$this->currentUser->id}");
+        $response = $this->deleteJson("api/posts/{$this->currentUser->id}");
         $response->assertStatus(Response::HTTP_NO_CONTENT);
     }
 
@@ -40,7 +40,7 @@ class DeletePostTest extends TestCase
             'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has',
             'tags' =>  json_encode(['PHP', 'SQL', 'Node'])
         ]);
-        $response = $this->deleteJson("api/post/{$post->id}");
+        $response = $this->deleteJson("api/posts/{$post->id}");
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
         $response->assertJson([
             'message' => 'This post does not belong to you'

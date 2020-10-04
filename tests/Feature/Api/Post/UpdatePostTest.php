@@ -26,7 +26,7 @@ class UpdatePostTest extends TestCase
 
         $post = factory(Post::class)->create($form->create);
 
-        $response = $this->putJson("api/post/{$post->id}", $form->update);
+        $response = $this->putJson("api/posts/{$post->id}", $form->update);
         $response->assertStatus(Response::HTTP_OK);
         $this->assertEquals($response->decodeResponseJson('title'), $form->update['title']);
     }
@@ -43,7 +43,7 @@ class UpdatePostTest extends TestCase
             'tags' =>  json_encode(['PHP', 'SQL', 'Node'])
         ]);
 
-        $response = $this->putJson("api/post/{$post->id}", $form->update);
+        $response = $this->putJson("api/posts/{$post->id}", $form->update);
         $response->assertStatus(Response::HTTP_UNAUTHORIZED);
         $response->assertJson([
             'message' => 'This post does not belong to you'
@@ -54,7 +54,7 @@ class UpdatePostTest extends TestCase
     {
         $form = $this->data();
 
-        $response = $this->putJson("api/post/2", $form->update);
+        $response = $this->putJson("api/posts/2", $form->update);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJson([
             "errors" => [

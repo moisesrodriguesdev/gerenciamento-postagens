@@ -25,12 +25,12 @@ Route::namespace('Api')->group(function () {
 
     Route::namespace('Post')->group(function () {
         Route::middleware('api.jwt')->group(function () {
-            Route::get('post', 'PostController@index');
-            Route::post('post', 'PostController@store');
+            Route::get('posts', 'PostController@index');
+            Route::post('posts', 'PostController@store');
 
             Route::middleware('post')->group(function () {
-                Route::put('post/{postId}', 'PostController@update');
-                Route::delete('post/{postId}', 'PostController@delete');
+                Route::put('posts/{postId}', 'PostController@update');
+                Route::delete('posts/{postId}', 'PostController@delete');
             });
         });
     });

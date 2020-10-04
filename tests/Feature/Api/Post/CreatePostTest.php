@@ -16,14 +16,14 @@ class CreatePostTest extends TestCase
 
     public function test_post_success()
     {
-        $response = $this->postJson("api/post", $this->data());
+        $response = $this->postJson("api/posts", $this->data());
         $response->assertStatus(Response::HTTP_CREATED);
         $response->assertJsonStructure(["title", "content", "tags", "autor_id", "id"]);
     }
 
     public function test_duplicate_post()
     {
-        $response = $this->postJson("api/post", $this->data());
+        $response = $this->postJson("api/posts", $this->data());
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJson([
             "message" => "The given data was invalid.",
@@ -40,7 +40,7 @@ class CreatePostTest extends TestCase
      */
     public function test_validate_fields_post($dados, $erro)
     {
-        $response = $this->postJson("api/post", $dados);
+        $response = $this->postJson("api/posts", $dados);
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
         $response->assertJsonFragment($erro);
     }
