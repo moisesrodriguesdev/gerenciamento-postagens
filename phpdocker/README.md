@@ -24,8 +24,7 @@ You can access your application via **`localhost`**, if you're running the conta
 
 Service|Address outside containers
 ------|---------|-----------
-Webserver|[localhost:1025](http://localhost:1025)
-MySQL|**host:** `localhost`; **port:** `1027`
+Webserver|[localhost:6666](http://localhost:6666)
 
 ## Hosts within your environment ##
 
@@ -34,7 +33,6 @@ You'll need to configure your application to use any services you enabled:
 Service|Hostname|Port number
 ------|---------|-----------
 php-fpm|php-fpm|9000
-MySQL|mysql|3306 (default)
 
 # Docker compose cheatsheet #
 
@@ -49,12 +47,6 @@ MySQL|mysql|3306 (default)
         * Shell into the PHP container, `docker-compose exec php-fpm bash`
         * Run symfony console, `docker-compose exec php-fpm bin/console`
         * Open a mysql shell, `docker-compose exec mysql mysql -uroot -pCHOSEN_ROOT_PASSWORD`
-
-# Application file permissions #
-
-As in all server environments, your application needs the correct file permissions to work proberly. You can change the files throught the container, so you won't care if the user exists or has the same ID on your host.
-
-`docker-compose exec php-fpm chown -R www-data:www-data /application/public`
 
 # Recommendations #
 

@@ -3,24 +3,8 @@
 ###############################################################################
 version: "3.1"
 services:
-  mysql:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
-    container_name: gerenciamento-postagens-mysql
-    working_dir: /application
-    volumes:
-      - .:/application
-    environment:
-      - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=gerenciamento_postagens
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=root
-    ports:
-      - "1027:3306"
-
   webserver:
     image: nginx:alpine
-    container_name: gerenciamento-postagens-webserver
     working_dir: /application
     volumes:
       - .:/application
@@ -30,8 +14,19 @@ services:
 
   php-fpm:
     build: phpdocker/php-fpm
-    container_name: gerenciamento-postagens-php-fpm
     working_dir: /application
     volumes:
       - .:/application
       - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.4/fpm/conf.d/99-overrides.ini
+  db:
+    image: postgres:11
+    ports:
+      - "65432:5432"
+    environment:
+      - DEBUG=false
+
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=post_api
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./data:/var/lib/postgresql
