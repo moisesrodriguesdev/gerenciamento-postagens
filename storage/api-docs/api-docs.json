@@ -1,0 +1,495 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Gerenciamento de Postagens API",
+        "description": "API do projeto Gerenciamento de Postagens",
+        "contact": {
+            "email": "moisesabreurodrigues@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/",
+            "description": "Gerenciamento de Postagens API"
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Cadastro de usuarios",
+                "description": "Cadastro de usuarios",
+                "operationId": "storeUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Cadastro de usuário no sistema",
+                                        "type": "string",
+                                        "example": "Moises Rodrigues"
+                                    },
+                                    "email": {
+                                        "description": "Cadastro de usuário no sistema",
+                                        "type": "string",
+                                        "example": "moises.rodrigues@gmail.com"
+                                    },
+                                    "password": {
+                                        "description": "Cadastro de usuário no sistema",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Executado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "User successfully registered",
+                                        "user": {
+                                            "name": "Moises Rodrigues",
+                                            "email": "moises.rodrigues@email.com",
+                                            "updated_at": "2020-10-03T02:00:14.000000Z",
+                                            "created_at": "2020-10-03T02:00:14.000000Z",
+                                            "id": 1
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "The given data was invalid.",
+                                        "errors": {
+                                            "name": [
+                                                "The name must be between 2 and 100 characters."
+                                            ],
+                                            "email": [
+                                                "The email has already been taken."
+                                            ],
+                                            "password": [
+                                                "The password must be at least 6 characters."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Usuario"
+                ],
+                "summary": "Login do usuario",
+                "description": "Login do usuario no sistema",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "description": "Login do usuário no sistema",
+                                        "type": "string",
+                                        "example": "moises.rodrigues@email.com"
+                                    },
+                                    "password": {
+                                        "description": "Login do usuário no sistema",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Executado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc3Q6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTYwMTY4OTQ3NiwiZXhwIjoxNjAxNjkzMDc2LCJuYmYiOjE2MDE2ODk0NzYsImp0aSI6IlkwWEZNbUpocWZESlFlUEMiLCJzdWIiOjEsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.EUfXxmxKkBeGtZdfainSTv-9b0UguAm4I-QYBPZ4TGU",
+                                        "token_type": "bearer",
+                                        "expires_in": 14400
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "error": "Unauthorized"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/post": {
+            "get": {
+                "tags": [
+                    "Postagem"
+                ],
+                "summary": "Lista Posts",
+                "description": "Retorna todas as postagens cadastradas no sistema",
+                "operationId": "getPosts",
+                "parameters": [
+                    {
+                        "name": "tag",
+                        "in": "query",
+                        "description": "Filtrar postagem pela tag",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Executado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": [
+                                        {
+                                            "id": 1,
+                                            "title": "Titulo teste",
+                                            "content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type",
+                                            "tags": [
+                                                "C",
+                                                "PHP",
+                                                "C#"
+                                            ],
+                                            "author": "Moises rodrigues"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "status": "Authorization Token not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Postagem"
+                ],
+                "summary": "Cadastro de postagens",
+                "description": "Cadastro de postagens",
+                "operationId": "storePost",
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "title",
+                                    "content",
+                                    "tags"
+                                ],
+                                "properties": {
+                                    "title": {
+                                        "description": "Cadastro de postagens no sistema",
+                                        "type": "string",
+                                        "example": "Titulo do post"
+                                    },
+                                    "content": {
+                                        "description": "Cadastro de postagens no sistema",
+                                        "type": "string",
+                                        "example": "Conteudo do post"
+                                    },
+                                    "tags": {
+                                        "description": "Cadastro de postagens no sistema",
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "tag": {
+                                                    "description": "Cadastro de postagens no sistema",
+                                                    "type": "string",
+                                                    "example": "PHP"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "example": [
+                                            "C",
+                                            "PHP",
+                                            "Java"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Executado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "title": "Titulo do post",
+                                        "content": "Conteudo do post",
+                                        "tags": [
+                                            "C",
+                                            "PHP",
+                                            "Java"
+                                        ],
+                                        "autor_id": 1,
+                                        "id": 1
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "The given data was invalid.",
+                                        "errors": {
+                                            "title": [
+                                                "The title has already been taken."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "status": "Authorization Token not found"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/post/{postId}": {
+            "put": {
+                "tags": [
+                    "Postagem"
+                ],
+                "summary": "Atualiza Postagem",
+                "description": "Atualiza post cadastrado anteriormente no sistema",
+                "operationId": "updatePost",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "ID do post previamente cadastrado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "title": {
+                                        "description": "Atualiza Postagem",
+                                        "type": "string",
+                                        "example": "Alterar Titulo do post"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Executado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "title": "Alterar Titulo do post",
+                                        "updated_at": "2020-10-02 00:46:02"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": [
+                                        {
+                                            "message": "This post does not belong to you"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "message": "The given data was invalid.",
+                                        "errors": {
+                                            "title": [
+                                                "The title has already been taken."
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Postagem"
+                ],
+                "summary": "Deleta Postagem",
+                "description": "Deleta post cadastrado anteriormente no sistema",
+                "operationId": "deletePost",
+                "parameters": [
+                    {
+                        "name": "postId",
+                        "in": "path",
+                        "description": "ID do post previamente cadastrado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Executado com sucesso"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": [
+                                        {
+                                            "message": "This post does not belong to you"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "oauth2",
+                "in": "header",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "/api/auth/auth",
+                        "scopes": {}
+                    }
+                },
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
