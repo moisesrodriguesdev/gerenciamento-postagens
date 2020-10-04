@@ -24,7 +24,7 @@ class Controller extends BaseController
      * ),
      *
      * @OA\Server(
-     *      url="https://gerenciamentopostapi.herokuapp.com/",
+     *      url="http://gerenciamentopostapi.herokuapp.com/",
      *      description="Gerenciamento de Postagens API"
      * ),
      *
