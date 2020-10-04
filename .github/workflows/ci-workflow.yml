@@ -44,6 +44,6 @@ jobs:
         env:
           DB_HOST_TEST: db
           DB_PORT_TEST: 5432
-          DB_DATABASE_TEST: post_api_test
+          DB_DATABASE_TEST: post_api
           DB_USERNAME_TEST: postgres
           DB_PASSWORD_TEST: postgres
