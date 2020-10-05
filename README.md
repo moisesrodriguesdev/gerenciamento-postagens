@@ -1,5 +1,7 @@
 API para prover e criar dados do Gerenciar de Postagens
 
+API Hospedada no Heroku - http://gerenciamentopostapi.herokuapp.com
+
 ## Tecnologias
 
 -   Pipelines de CI com GitHub Actions
@@ -17,7 +19,9 @@ API para prover e criar dados do Gerenciar de Postagens
 -   PHP 7.4 (FPM)
 -   Laravel 7
 
-# Servidor de desenvolvimento 🚀🚀
+# Instalação local 🚀🚀
+
+**Você precisa instalar o Docker e o Docker-composer primeiro e, em seguida, para clonar o projeto via HTTPS, execute este comando:**
 
 Clonando o projeto
 
@@ -73,9 +77,22 @@ Gerar Application Keys
 php artisan key:generate
 ```
 
-Será necessário da permissão para as views acessar os storage
+Fora do container execute os comandos abaixo para permissão as views
 
 ```
 sudo chgrp -R www-data storage bootstrap/cache
 sudo chmod -R ug+rwx storage bootstrap/cache
+```
+
+# Execução 🚀🚀
+
+**Você precisa criar duas tabelas na instancia do container Postgress, post_api e pgsql_test, em seguida execute este comando:**
+
+Rode as migrations
+```
+php artisan migrate:fresh
+```
+Servidor de desenvolvimento
+```
+http://localhost:8000
 ```
