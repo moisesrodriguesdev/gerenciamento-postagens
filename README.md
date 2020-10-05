@@ -8,6 +8,7 @@ API Hospedada no Heroku - http://gerenciamentopostapi.herokuapp.com
 -   PHPUnit para testes unitários
 -   Php-cs-fixer para corrigir os padrões de codificação do PHP
 -   Autenticação com JWT
+-   Documentação com OpenAPI (Swagger)
 
 ### Ambiente
 
