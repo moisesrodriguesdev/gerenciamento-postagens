@@ -24,7 +24,7 @@ class Controller extends BaseController
      * ),
      *
      * @OA\Server(
-     *      url="http://gerenciamentopostapi.herokuapp.com/",
+     *      url=L5_SWAGGER_CONST_HOST,
      *      description="Gerenciamento de Postagens API"
      * ),
      *
